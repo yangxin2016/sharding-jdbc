@@ -13,7 +13,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-            connectionURL="jdbc:mysql://localhost:3306/student?serverTimezone=UTC" userId="root" password="123456">
+            connectionURL="jdbc:mysql://localhost:3306/user1?serverTimezone=UTC" userId="root" password="123456">
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -36,6 +36,6 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table tableName="t_student0" domainObjectName="Student"/>
+        <table tableName="t_user0" domainObjectName="User"/>
     </context>
 </generatorConfiguration>

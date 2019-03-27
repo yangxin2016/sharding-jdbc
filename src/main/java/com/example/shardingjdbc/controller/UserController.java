@@ -1,71 +1,70 @@
 package com.example.shardingjdbc.controller;
 
-import com.example.shardingjdbc.model.Student;
-import com.example.shardingjdbc.service.StudentService;
+import com.example.shardingjdbc.model.User;
+import com.example.shardingjdbc.service.UserService;
 import com.github.pagehelper.Page;
-import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by yangxin on 2019/3/15.
  */
 @RestController
-@RequestMapping("student")
-public class StudentController {
+@RequestMapping("user")
+public class UserController {
 
     @Autowired
-    StudentService studentService;
+    UserService userService;
 
     @RequestMapping("/add")
     public Object add(){
-        for(int i=11;i<21;i++){
-            Student student = new Student();
-            student.setName("stu"+i);
-            student.setAge(12+i);
-            student.setClassNo("000"+i);
-            student.setSex(0);
-            student.setCreateTime(new Date());
-            student.setGid((long)i);
+        for(int i=1;i<20;i++){
+            User user = new User();
+            user.setName("user-"+i);
+            user.setClassNo(i);
+            user.setCreateTime(new Date());
+            user.setGid(i);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            studentService.addStudent(student);
+            userService.addUser(user);
         }
         return "success";
     }
 
     @RequestMapping("/gid/{gid}")
-    public Object getStudentByGid(@PathVariable Integer gid){
+    public Object getUserByGid(@PathVariable Integer gid){
         if(gid==null){
             return "gid 不能为null";
         }
-        Student student = studentService.getStudentByGid(gid);
-        if(student!=null)
-            return new Gson().toJson(student);
+        User user = userService.getUserByGid(gid);
+        if(user!=null)
+            return new Gson().toJson(user);
         else
             return "no record";
     }
 
     @RequestMapping("/list/{page}")
-    public Object getList(@PathVariable Integer page,@RequestBody Student student){
+    public Object getList(@PathVariable Integer page,@RequestBody User user){
         if(page==null){
             page=0;
         }
         Map result = new HashMap();
         try {
-            Page<Student> studentsPage = studentService.getList(page,student);
+            Page<User> usersPage = userService.getList(page,user);
             result.put("status","0000");
-            result.put("total", studentsPage.getTotal());
-            result.put("rows", studentsPage.getResult());
+            result.put("total", usersPage.getTotal());
+            result.put("rows", usersPage.getResult());
             return new Gson().toJson(result);
         }catch (Exception e){
             e.printStackTrace();
